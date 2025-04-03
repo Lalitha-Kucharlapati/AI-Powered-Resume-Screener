@@ -1,13 +1,12 @@
 import spacy
-import os
+import subprocess
 
-# Get the full model path
-model_path = os.path.join(os.path.dirname(spacy.__file__), "data", "en_core_web_sm")
-
-print(f"🔍 Looking for model at: {model_path}")  # Debug print
-
+# Ensure model is installed
 try:
-    nlp = spacy.load("en_core_web_sm")  # Load directly if installed in environment
+    nlp = spacy.load("en_core_web_sm")
     print("✅ SpaCy model loaded successfully!")
-except Exception as e:
-    print(f"❌ Error loading model: {e}")
+except OSError:
+    print("⚠️ Model not found, installing now...")
+    subprocess.run(["python", "-m", "spacy", "download", "en_core_web_sm"], check=True)
+    nlp = spacy.load("en_core_web_sm")
+    print("✅ SpaCy model installed and loaded!")
