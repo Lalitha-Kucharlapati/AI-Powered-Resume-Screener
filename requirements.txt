@@ -3,5 +3,3 @@ google-generativeai
 PyMuPDF
 fpdf
 spacy
-spacy[transformers]
-spacy-lookups-data
