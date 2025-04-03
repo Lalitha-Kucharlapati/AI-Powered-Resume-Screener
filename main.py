@@ -4,25 +4,28 @@ import fitz  # PyMuPDF for PDF text extraction
 import spacy
 from fpdf import FPDF
 
+# Configure Google Gemini API Key
+genai.configure(api_key="AIzaSyBvnLOoxE1fRANbCd_b3Zt-1_rkPPv4hJ8")  # Replace with your actual API key
+
+# Load NLP model
+import spacy
 import os
 import subprocess
 
-# Check if the model is installed, if not, download it
-# Load NLP model
 model_name = "en_core_web_sm"
+
+# Ensure the model is installed
 try:
     nlp = spacy.load(model_name)
 except OSError:
     print(f"Downloading {model_name} model...")
     subprocess.run(["python", "-m", "spacy", "download", model_name])
+    
+    # Force linking the model to make sure SpaCy recognizes it
+    subprocess.run(["python", "-m", "spacy", "link", model_name, model_name])
+    
+    # Load the model after installation
     nlp = spacy.load(model_name)
-
-
-# Configure Google Gemini API Key
-genai.configure(api_key="AIzaSyBvnLOoxE1fRANbCd_b3Zt-1_rkPPv4hJ8")  # Replace with your actual API key
-
-
-
 
 # Function to extract text from a PDF
 def extract_text_from_pdf(uploaded_file):
